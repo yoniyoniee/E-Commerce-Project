@@ -1,0 +1,113 @@
+drop table BalancesHistory;
+drop table USERS;
+
+
+CREATE TABLE Users (
+    user_id VARCHAR(255) PRIMARY KEY,
+    user_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE BalancesHistory (
+    balance_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id VARCHAR(255) NOT NULL,
+    balance_datetime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    deposit_amount INT DEFAULT 0,
+    withdrawal_amount INT DEFAULT 0,
+    status VARCHAR(255) NOT NULL,
+    current_balance INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+
+INSERT INTO Users (user_id, user_name) VALUES
+('2400534', '신희연'),
+('2400539', '이성원'),
+('0300056', '김편곤'),
+('2000494', '남금남'),
+('0400098', '하준구'),
+('1000263', '차영환'),
+('2000492', '곽민영'),
+('2000493', '이민지'),
+('2200512', '정지은'),
+('1990046', '전무현');
+
+
+-- 2400534 데이터 추가
+INSERT INTO BalancesHistory (user_id, balance_datetime, deposit_amount, withdrawal_amount, status, current_balance)
+VALUES
+('2400534', '2024-05-21 10:12:00', 100000, 0, '입금', 100000),
+('2400534', '2024-05-21 11:12:00', 0, 30000, '출금', 70000),
+('2400534', '2024-05-22 10:12:00', 0, 20000, '출금', 50000),
+('2400534', '2024-05-25 11:12:00', 0, 20000, '출금', 30000),
+('2400534', '2024-06-11 10:12:00', 40000, 0, '입금', 70000),
+('2400534', '2024-06-12 11:12:00', 0, 34000, '출금', 46000),
+('2400534', '2024-06-13 11:12:00', 0, 20000, '출금', 26000);
+
+-- 2400539 데이터 추가
+INSERT INTO BalancesHistory (user_id, balance_datetime, deposit_amount, withdrawal_amount, status, current_balance)
+VALUES
+('2400539', '2024-05-20 10:12:00', 100000, 0, '입금', 100000),
+('2400539', '2024-05-21 11:12:00', 0, 30000, '출금', 70000),
+('2400539', '2024-05-22 10:12:00', 0, 20000, '출금', 50000),
+('2400539', '2024-05-27 11:12:00', 0, 20000, '출금', 30000),
+('2400539', '2024-06-11 10:12:00', 40000, 0, '입금', 70000),
+('2400539', '2024-06-12 11:12:00', 0, 34000, '출금', 46000),
+('2400539', '2024-06-13 11:12:00', 0, 20000, '출금', 26000);
+
+
+CREATE TABLE SalesAmount (
+    sales_amount_id VARCHAR PRIMARY KEY,
+    product_code VARCHAR,
+    category VARCHAR,
+    sales_amount INT,
+    FOREIGN KEY (product_code) REFERENCES Products(product_code)
+);
+
+CREATE TABLE Products (
+    seq INT AUTO_INCREMENT PRIMARY KEY,
+    product_code VARCHAR(255) UNIQUE,
+    product_name VARCHAR(255),
+    category VARCHAR(255),
+    price INT,
+    stock INT
+);
+
+
+CREATE TABLE Orders (
+    seq INT AUTO_INCREMENT PRIMARY KEY,
+    order_code VARCHAR(255) UNIQUE,
+    user_id VARCHAR(255),
+    order_date DATETIME,
+    payment_date DATETIME,
+    product_code VARCHAR(255),
+    quantity INT,
+    total INT,
+    status VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (product_code) REFERENCES Products(product_code)
+);
+
+drop table orderhistory;
+drop table orderlist;
+
+CREATE TABLE orderList (
+    seq INT AUTO_INCREMENT  PRIMARY KEY,
+    order_code VARCHAR(255) unique,
+    user_id VARCHAR(255),
+    product_code VARCHAR(255),
+    quantity INT,
+    total INT,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (product_code) REFERENCES products(product_code)
+);
+
+CREATE TABLE ORDERHISTORY (
+    seq INT AUTO_INCREMENT  PRIMARY KEY,
+    order_history_code VARCHAR(255) unique,
+    order_date DATETIME,
+    order_code VARCHAR(255),
+    status VARCHAR(255),
+    FOREIGN KEY (order_code) REFERENCES ORDERLIST(order_code)
+);
+
+
