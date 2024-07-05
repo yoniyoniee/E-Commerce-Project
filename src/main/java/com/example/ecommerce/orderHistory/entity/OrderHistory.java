@@ -15,7 +15,8 @@ public class OrderHistory {
     private String orderHistoryCode;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer seq;
 
     @Column(name = "order_date")

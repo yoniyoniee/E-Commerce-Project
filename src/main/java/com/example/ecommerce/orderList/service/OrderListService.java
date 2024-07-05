@@ -41,15 +41,22 @@ public class OrderListService {
 
     public OrderListResponseDTO addOrderList(String userId, OrderListRequestDTO orderRequest) {
 
-
+        // 사용자 정보 가져오기
         Users user = usersService.findById(userId);
         orderRequest.setUser(user);
         OrderList orderList = orderRequest.toEntity();
+
+        // 제품 정보 가져오기
         Products product = productsService.findByCode(orderRequest.getProductCode());
         orderList.setProduct(product);
         orderList.setTotal(product.getPrice() * orderRequest.getQuantity());
+
+        // OrderList 엔티티 저장
         OrderList savedOrderList = orderListRepository.save(orderList);
+
+        // orderList 저장된 후 OrderHistory 생성 및 저장
         orderHistoryService.addOrderInfo(savedOrderList);
+
         return new OrderListResponseDTO(savedOrderList);
     }
 

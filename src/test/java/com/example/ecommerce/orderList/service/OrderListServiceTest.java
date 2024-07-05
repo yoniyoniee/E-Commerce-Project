@@ -7,6 +7,7 @@ import com.example.ecommerce.product.entity.Products;
 import com.example.ecommerce.product.service.ProductsService;
 import com.example.ecommerce.users.entity.Users;
 import com.example.ecommerce.users.service.UsersService;
+import jakarta.persistence.Column;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +36,7 @@ class OrderListServiceTest {
     }
 
     @Test
+    @Commit
     void addOrderList() {
         String userId = "2400534";
         String productCode = "BT_12";
@@ -42,7 +44,8 @@ class OrderListServiceTest {
         OrderListRequestDTO requestDTO = new OrderListRequestDTO();
 
         Products products = productsService.findByCode(productCode);
-        requestDTO.setProduct(products);
+        //requestDTO.setProduct(products);
+        requestDTO.setProductCode(productCode);
         requestDTO.setQuantity(quantity);
 
         Users user = usersService.findById(userId);

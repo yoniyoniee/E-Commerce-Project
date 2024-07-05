@@ -58,6 +58,29 @@ public class OrderHistoryService {
 
     }
 
+    public OrderHistory addOrderInfo2(OrderList orderList) {
+
+        // OrderHistory 엔티티 생성 및 설정
+        OrderHistory orderHistory = new OrderHistory();
+        orderHistory.setOrderList(orderList);
+        orderHistory.setOrderDate(LocalDateTime.now());
+
+        // 주문 수량과 재고에 따라 상태 값 status 설정 (입금대기 / 재고부족)
+        int quantity = orderList.getQuantity();
+        Products product = orderList.getProduct();
+        int stock = product.getStock();
+
+        if(quantity >= stock) {
+            orderHistory.setStatus("입금대기");
+        }else {
+            orderHistory.setStatus("재고부족");
+        }
+
+        return orderHistoryRepository.save(orderHistory);
+    }
+
+
+
 
     public OrderHistory addPayInfo(OrderList orderList) {
         int total = orderList.getTotal();
